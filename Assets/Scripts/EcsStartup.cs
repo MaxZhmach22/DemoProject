@@ -1,46 +1,108 @@
+using System;
+using DemoProject.Input;
+using DemoProject.Player;
 using Leopotam.EcsLite;
+using Leopotam.EcsLite.Di;
 using UnityEngine;
+using Zenject;
 
-namespace Client {
-    sealed class EcsStartup : MonoBehaviour {
-        EcsWorld _world;        
-        IEcsSystems _systems;
 
-        void Start () {
+namespace DemoProject {
+    public sealed class EcsStartup : MonoBehaviour 
+    {
+        private EcsWorld _world;        
+        private IEcsSystems _updateSystems;
+        private IEcsSystems _fixedUpdateSystems;
+        private IEcsSystems _initSystems;
+        private DynamicJoystick _dynamicJoystick;
+        private PlayerSettings _playerSettings;
+        private PlayerView _playerView;
+
+        [Inject]
+        private void Init(
+            DynamicJoystick dynamicJoystick, 
+            PlayerSettings playerSettings,
+            PlayerView playerView)
+        {
+            _dynamicJoystick = dynamicJoystick;
+            _playerSettings = playerSettings;
+            _playerView = playerView;
+        }
+
+        void Start () 
+        {
             _world = new EcsWorld ();
-            _systems = new EcsSystems (_world);
-            _systems
-                // register your systems here, for example:
-                // .Add (new TestSystem1 ())
-                // .Add (new TestSystem2 ())
-                
-                // register additional worlds here, for example:
-                // .AddWorld (new EcsWorld (), "events")
+
+            _initSystems = new EcsSystems(_world);
+            _fixedUpdateSystems = new EcsSystems(_world);
+            _updateSystems = new EcsSystems (_world);
+
+            AddInitSystems();
+            AddFixedUpdateSystems();
+            AddRunSystems();
+            
+            _initSystems.Init();
+            _fixedUpdateSystems.Init();
+            _updateSystems
 #if UNITY_EDITOR
-                // add debug systems for custom worlds here, for example:
-                // .Add (new Leopotam.EcsLite.UnityEditor.EcsWorldDebugSystem ("events"))
                 .Add (new Leopotam.EcsLite.UnityEditor.EcsWorldDebugSystem ())
 #endif
                 .Init ();
         }
 
-        void Update () {
-            // process systems here.
-            _systems?.Run ();
+        private void AddInitSystems()
+        {
+            _initSystems
+                .Add(new UnitTransformInitSystem())
+                .Add(new JoystickInputInit(_dynamicJoystick))
+                .Add(new PlayerInitSystem(_playerView))
+                .Inject();
+        }
+        
+        private void AddRunSystems()
+        {
+            _updateSystems
+                .Add(new JoystickRunSystem(_dynamicJoystick))
+                .Inject();
+
         }
 
-        void OnDestroy () {
-            if (_systems != null) {
-                // list of custom worlds will be cleared
-                // during IEcsSystems.Destroy(). so, you
-                // need to save it here if you need.
-                _systems.Destroy ();
-                _systems = null;
+        private void AddFixedUpdateSystems()
+        {
+            _fixedUpdateSystems
+                .Inject();
+        }
+
+        void Update() 
+        {
+            _updateSystems?.Run();
+        }
+
+        private void FixedUpdate()
+        {
+            _fixedUpdateSystems?.Run();
+        }
+
+        void OnDestroy () 
+        {
+            if (_initSystems != null) 
+            {
+                _initSystems.Destroy ();
+                _initSystems = null;
             }
             
-            // cleanup custom worlds here.
+            if (_fixedUpdateSystems != null) 
+            {
+                _fixedUpdateSystems.Destroy ();
+                _fixedUpdateSystems = null;
+            }
             
-            // cleanup default world.
+            if (_updateSystems != null) 
+            {
+                _updateSystems.Destroy ();
+                _updateSystems = null;
+            }
+            
             if (_world != null) {
                 _world.Destroy ();
                 _world = null;
