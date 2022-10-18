@@ -17,16 +17,19 @@ namespace DemoProject {
         private DynamicJoystick _dynamicJoystick;
         private PlayerSettings _playerSettings;
         private PlayerView _playerView;
+        private PlayerAnimatorView _playerAnimatorView;
 
         [Inject]
         private void Init(
             DynamicJoystick dynamicJoystick, 
             PlayerSettings playerSettings,
-            PlayerView playerView)
+            PlayerView playerView,
+            PlayerAnimatorView playerAnimatorView)
         {
             _dynamicJoystick = dynamicJoystick;
             _playerSettings = playerSettings;
             _playerView = playerView;
+            _playerAnimatorView = playerAnimatorView;
         }
 
         void Start () 
@@ -56,6 +59,7 @@ namespace DemoProject {
                 .Add(new UnitTransformInitSystem())
                 .Add(new JoystickInputInit(_dynamicJoystick))
                 .Add(new PlayerInitSystem(_playerView))
+                .Add(new AnimatorInitSystem(_playerAnimatorView))
                 .Inject();
         }
         
@@ -63,6 +67,7 @@ namespace DemoProject {
         {
             _updateSystems
                 .Add(new JoystickRunSystem(_dynamicJoystick))
+                .Add(new AnimatorRunSystem())
                 .Inject();
 
         }

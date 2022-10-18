@@ -21,12 +21,14 @@ namespace DemoProject.Input
         {
             foreach (var entity in _filter.Value)
             {
-                ref var joystickComp = ref _pool.Value.Get(entity);
-                joystickComp.Vertical = _dynamicJoystick.Vertical;
-                joystickComp.Horizontal = _dynamicJoystick.Horizontal;
-                
-                Debug.Log($"{joystickComp.Vertical} {joystickComp.Horizontal}");
+                SetValue(ref _pool.Value.Get(entity));
             }
+        }
+
+        private void SetValue(ref JoysticInputComponent joystickComp)
+        {
+            joystickComp.Vertical = _dynamicJoystick.Vertical;
+            joystickComp.Horizontal = _dynamicJoystick.Horizontal;
         }
     }
 }
