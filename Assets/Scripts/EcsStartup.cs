@@ -16,20 +16,24 @@ namespace DemoProject {
         private PlayerSettings _playerSettings;
         private PlayerView _playerView;
         private PlayerAnimatorView _playerAnimatorView;
+        private GroundChecker _groundChecker;
+        [Inject(Id = "Iceland")] private Transform _iceland;
 
         [Inject]
         private void Init(
             DynamicJoystick dynamicJoystick, 
             PlayerSettings playerSettings,
             PlayerView playerView,
-            PlayerAnimatorView playerAnimatorView)
+            PlayerAnimatorView playerAnimatorView,
+            GroundChecker groundChecker)
         {
             _dynamicJoystick = dynamicJoystick;
             _playerSettings = playerSettings;
             _playerView = playerView;
             _playerAnimatorView = playerAnimatorView;
+            _groundChecker = groundChecker;
         }
-
+        
         void Start () 
         {
             _world = new EcsWorld ();
@@ -58,6 +62,7 @@ namespace DemoProject {
                 .Add(new JoystickInputInit(_dynamicJoystick))
                 .Add(new PlayerInitSystem(_playerView))
                 .Add(new AnimatorInitSystem(_playerAnimatorView))
+                .Add(new IcelandSwingSystem(_iceland))
                 .Inject();
         }
         
@@ -67,14 +72,17 @@ namespace DemoProject {
                 .Add(new JoystickRunSystem(_dynamicJoystick))
                 .Add(new AnimatorRunSystem())
                 .Add(new PlayerMovementSystem())
-                .Inject();
+                .Inject()
+                .Inject(_playerSettings);
 
         }
 
         private void AddFixedUpdateSystems()
         {
             _fixedUpdateSystems
-                .Inject();
+                .Add(new GroundCheckSystem())
+                .Inject()
+                .Inject(_playerSettings, _groundChecker);
         }
 
         void Update() 
