@@ -6,4 +6,4 @@ on the other hand we can use built in Di container in LeoEcsLite framework for t
 In the project I'm using tools like DotWeen, Cinemachine, ObiRope, UniRx and UniTask. 
 
 UML architecture scheme:
-![Architecture](https://user-images.githubusercontent.com/73941605/196649740-39ca4df6-85fe-4390-bde2-504ce230a315.png)
+![Architecture](Architecture.png)
