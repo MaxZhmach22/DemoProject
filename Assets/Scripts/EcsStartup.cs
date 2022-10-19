@@ -1,6 +1,4 @@
-using System;
 using DemoProject.Input;
-using DemoProject.Player;
 using Leopotam.EcsLite;
 using Leopotam.EcsLite.Di;
 using UnityEngine;
@@ -68,6 +66,7 @@ namespace DemoProject {
             _updateSystems
                 .Add(new JoystickRunSystem(_dynamicJoystick))
                 .Add(new AnimatorRunSystem())
+                .Add(new PlayerMovementSystem())
                 .Inject();
 
         }

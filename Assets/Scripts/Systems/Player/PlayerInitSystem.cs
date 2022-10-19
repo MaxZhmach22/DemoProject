@@ -2,12 +2,12 @@
 using Leopotam.EcsLite.Di;
 
 
-namespace DemoProject.Player
+namespace DemoProject
 {
     public class PlayerInitSystem : IEcsInitSystem
     {
-        private readonly EcsWorldInject _world = default;
-        private readonly EcsPoolInject<PlayerMarkerComponent> _pool = default;
+        private readonly EcsPoolInject<PlayerTransformComponent> _pool = default;
+        private readonly EcsFilterInject<Inc<JoysticInputComponent>> _joystickFilter = default;
         private readonly PlayerView _playerView;
 
         public PlayerInitSystem(PlayerView playerView)
@@ -19,7 +19,11 @@ namespace DemoProject.Player
         {
             if (_playerView)
             {
-                _pool.Value.Add(_world.Value.NewEntity());
+                foreach (var entity in _joystickFilter.Value)
+                {
+                    ref var playerComp = ref _pool.Value.Add(entity);
+                    playerComp.Transform = _playerView.transform;
+                }
             }
         }
     }
