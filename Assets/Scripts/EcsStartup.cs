@@ -17,6 +17,8 @@ namespace DemoProject {
         private PlayerView _playerView;
         private PlayerAnimatorView _playerAnimatorView;
         private GroundChecker _groundChecker;
+        private FishingRodHandView _fishingRodHandView;
+        private FishingRodSpineView _fishingRodSpineView;
         [Inject(Id = "Iceland")] private Transform _iceland;
 
         [Inject]
@@ -25,13 +27,17 @@ namespace DemoProject {
             PlayerSettings playerSettings,
             PlayerView playerView,
             PlayerAnimatorView playerAnimatorView,
-            GroundChecker groundChecker)
+            GroundChecker groundChecker,
+            FishingRodHandView fishingRodHandView,
+            FishingRodSpineView fishingRodSpineView)
         {
             _dynamicJoystick = dynamicJoystick;
             _playerSettings = playerSettings;
             _playerView = playerView;
             _playerAnimatorView = playerAnimatorView;
             _groundChecker = groundChecker;
+            _fishingRodHandView = fishingRodHandView;
+            _fishingRodSpineView = fishingRodSpineView;
         }
         
         void Start () 
@@ -72,8 +78,9 @@ namespace DemoProject {
                 .Add(new JoystickRunSystem(_dynamicJoystick))
                 .Add(new AnimatorRunSystem())
                 .Add(new PlayerMovementSystem())
+                .Add(new FishingRodSwitcherSystem())
                 .Inject()
-                .Inject(_playerSettings);
+                .Inject(_playerSettings, _fishingRodHandView, _fishingRodSpineView);
 
         }
 

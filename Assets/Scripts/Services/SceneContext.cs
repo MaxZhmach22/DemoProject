@@ -14,34 +14,36 @@ namespace DemoProject
         [field: BoxGroup("Player References")] [field: SerializeField] public PlayerAnimatorView AnimatorView { get; private set; }
         [field: BoxGroup("Player References")] [field: SerializeField] public GroundChecker GroundChecker { get; private set; }
         [field: BoxGroup("Iceland References")] [field: SerializeField] public Transform IcelandTransform { get; private set; }
+        [field: BoxGroup("Fishing References")] [field: SerializeField] public FishingRodHandView FishingRodHandView { get; private set; }
+        [field: BoxGroup("Fishing References")] [field: SerializeField] public FishingRodSpineView FishingRodSpineView { get; private set; }
 
         public override void InstallBindings()
         {
             InputReferenceInit();
             PlayerSettingsInit();
-            
+            FishingRodInit();
         }
 
         private void PlayerSettingsInit()
         {
             if (!PlayerSettings)
             {
-                PlayerSettings = FindObjectOfType<PlayerSettings>();
+                PlayerSettings = FindObjectOfType<PlayerSettings>(true);
             }
             
             if (!PlayerView)
             {
-                PlayerView = FindObjectOfType<PlayerView>();
+                PlayerView = FindObjectOfType<PlayerView>(true);
             }
 
             if (!AnimatorView)
             {
-                AnimatorView = FindObjectOfType<PlayerAnimatorView>();
+                AnimatorView = FindObjectOfType<PlayerAnimatorView>(true);
             }
 
             if (!GroundChecker)
             {
-                GroundChecker = FindObjectOfType<GroundChecker>();
+                GroundChecker = FindObjectOfType<GroundChecker>(true);
             }
 
             if (IcelandTransform)
@@ -60,10 +62,26 @@ namespace DemoProject
         {
             if (!DynamicJoystick)
             {
-                DynamicJoystick = FindObjectOfType<DynamicJoystick>();
+                DynamicJoystick = FindObjectOfType<DynamicJoystick>(true);
             }
 
             Container.Bind<DynamicJoystick>().FromInstance(DynamicJoystick).AsSingle();
+        }
+
+        private void FishingRodInit()
+        {
+            if (!FishingRodHandView)
+            {
+                FishingRodHandView = FindObjectOfType<FishingRodHandView>(true);
+            }
+
+            if (!FishingRodSpineView)
+            {
+                FishingRodSpineView = FindObjectOfType<FishingRodSpineView>(true);
+            }
+            
+            Container.Bind<FishingRodHandView>().FromInstance(FishingRodHandView).AsSingle();
+            Container.Bind<FishingRodSpineView>().FromInstance(FishingRodSpineView).AsSingle();
         }
     }
 }
