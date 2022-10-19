@@ -18,6 +18,8 @@ namespace DemoProject
 
         public void Init(IEcsSystems systems)
         {
+            _animator.InitEcsWorld(_world.Value);
+            
             foreach (var entity in _filter.Value)
             {
                 SetAnimator(ref _pool.Value.Add(entity));

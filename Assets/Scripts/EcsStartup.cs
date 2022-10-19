@@ -1,6 +1,7 @@
 using DemoProject.Input;
 using Leopotam.EcsLite;
 using Leopotam.EcsLite.Di;
+using UniRx;
 using UnityEngine;
 using Zenject;
 
@@ -19,6 +20,8 @@ namespace DemoProject {
         private GroundChecker _groundChecker;
         private FishingRodHandView _fishingRodHandView;
         private FishingRodSpineView _fishingRodSpineView;
+        private HookView _hookView;
+        private readonly CompositeDisposable _disposable = new CompositeDisposable();
         [Inject(Id = "Iceland")] private Transform _iceland;
 
         [Inject]
@@ -29,7 +32,8 @@ namespace DemoProject {
             PlayerAnimatorView playerAnimatorView,
             GroundChecker groundChecker,
             FishingRodHandView fishingRodHandView,
-            FishingRodSpineView fishingRodSpineView)
+            FishingRodSpineView fishingRodSpineView,
+            HookView hookView)
         {
             _dynamicJoystick = dynamicJoystick;
             _playerSettings = playerSettings;
@@ -38,6 +42,7 @@ namespace DemoProject {
             _groundChecker = groundChecker;
             _fishingRodHandView = fishingRodHandView;
             _fishingRodSpineView = fishingRodSpineView;
+            _hookView = hookView;
         }
         
         void Start () 
@@ -66,6 +71,7 @@ namespace DemoProject {
             _initSystems
                 .Add(new UnitTransformInitSystem())
                 .Add(new JoystickInputInit(_dynamicJoystick))
+                .Add(new DoubleTapCheckSystem(_disposable))
                 .Add(new PlayerInitSystem(_playerView))
                 .Add(new AnimatorInitSystem(_playerAnimatorView))
                 .Add(new IcelandSwingSystem(_iceland))
@@ -79,8 +85,9 @@ namespace DemoProject {
                 .Add(new AnimatorRunSystem())
                 .Add(new PlayerMovementSystem())
                 .Add(new FishingRodSwitcherSystem())
+                .Add(new HookMoveSystem())
                 .Inject()
-                .Inject(_playerSettings, _fishingRodHandView, _fishingRodSpineView);
+                .Inject(_playerSettings, _fishingRodHandView, _fishingRodSpineView, _hookView);
 
         }
 
@@ -88,6 +95,7 @@ namespace DemoProject {
         {
             _fixedUpdateSystems
                 .Add(new GroundCheckSystem())
+                .Add(new DoubleClickRaycastSystem())
                 .Inject()
                 .Inject(_playerSettings, _groundChecker);
         }
@@ -104,6 +112,8 @@ namespace DemoProject {
 
         void OnDestroy () 
         {
+            _disposable.Clear();
+            
             if (_initSystems != null) 
             {
                 _initSystems.Destroy ();

@@ -16,6 +16,7 @@ namespace DemoProject
         [field: BoxGroup("Iceland References")] [field: SerializeField] public Transform IcelandTransform { get; private set; }
         [field: BoxGroup("Fishing References")] [field: SerializeField] public FishingRodHandView FishingRodHandView { get; private set; }
         [field: BoxGroup("Fishing References")] [field: SerializeField] public FishingRodSpineView FishingRodSpineView { get; private set; }
+        [field: BoxGroup("Fishing References")] [field: SerializeField] public HookView HookView { get; private set; }
 
         public override void InstallBindings()
         {
@@ -79,7 +80,13 @@ namespace DemoProject
             {
                 FishingRodSpineView = FindObjectOfType<FishingRodSpineView>(true);
             }
-            
+
+            if (!HookView)
+            {
+                HookView = FindObjectOfType<HookView>(true);
+            }
+
+            Container.Bind<HookView>().FromInstance(HookView).AsSingle();
             Container.Bind<FishingRodHandView>().FromInstance(FishingRodHandView).AsSingle();
             Container.Bind<FishingRodSpineView>().FromInstance(FishingRodSpineView).AsSingle();
         }
