@@ -1,6 +1,7 @@
 using DemoProject.Input;
 using Leopotam.EcsLite;
 using Leopotam.EcsLite.Di;
+using Leopotam.EcsLite.ExtendedSystems;
 using UniRx;
 using UnityEngine;
 using Zenject;

@@ -10,6 +10,7 @@ namespace DemoProject
         private readonly EcsWorldInject _world = default;
         private readonly EcsPoolInject<AnimatorComponent> _pool = default;
         private readonly EcsFilterInject<Inc<JoysticInputComponent>> _filter = default;
+        private readonly EcsFilterInject<Inc<PlayerTransformComponent>> _playerFilter = default;
 
         public AnimatorInitSystem(PlayerAnimatorView playerAnimatorView)
         {
@@ -18,7 +19,11 @@ namespace DemoProject
 
         public void Init(IEcsSystems systems)
         {
-            _animator.InitEcsWorld(_world.Value);
+            foreach (var playerEntity in _playerFilter.Value)
+            {
+                _animator.InitEcsWorld(_world.Value, playerEntity);
+            }
+           
             
             foreach (var entity in _filter.Value)
             {

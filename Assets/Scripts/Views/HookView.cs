@@ -15,6 +15,8 @@ namespace DemoProject
         [field: Foldout("Refernces")] [field: SerializeField] public Rigidbody Rigidbody { get; private set; }
         [field: Foldout("Refernces")] [field: SerializeField] public Collider Collider { get; private set; }
         [field: Foldout("Refernces")] [field: SerializeField] public MeshRenderer HookRender { get; private set; }
+        [field: Foldout("Refernces")] [field: SerializeField] public ObiSolver ObiSolver { get; private set; }
+        [field: Foldout("Refernces")] [field: SerializeField] public ObiRope ObiRope { get; private set; }
 
         private void Awake()
         {
@@ -22,6 +24,8 @@ namespace DemoProject
             if (!Rigidbody) GetComponent<Rigidbody>();
             if (!Collider) GetComponent<Collider>();
             if (!HookRender) GetComponentInChildren<MeshRenderer>();
+            if (!ObiSolver) FindObjectOfType<ObiSolver>();
+            if (!ObiRope) FindObjectOfType<ObiRope>();
         }
 
         [Button("Get References")]
@@ -31,6 +35,8 @@ namespace DemoProject
             Rigidbody = GetComponent<Rigidbody>();
             Collider = GetComponent<Collider>();
             HookRender = GetComponentInChildren<MeshRenderer>();
+            ObiSolver = FindObjectOfType<ObiSolver>();
+            ObiRope = ObiSolver.GetComponentInChildren<ObiRope>();
         }
     }
 }
