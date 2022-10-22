@@ -76,7 +76,9 @@ namespace DemoProject {
                 .Add(new PlayerInitSystem(_playerView))
                 .Add(new AnimatorInitSystem(_playerAnimatorView))
                 .Add(new IcelandSwingSystem(_iceland))
-                .Inject();
+                .Add(new PickableInitSystem())
+                .Inject()
+                .Inject(_playerSettings);
         }
         
         private void AddRunSystems()
@@ -87,6 +89,9 @@ namespace DemoProject {
                 .Add(new PlayerMovementSystem())
                 .Add(new FishingRodSwitcherSystem())
                 .Add(new HookMoveSystem())
+                .AddGroup("CatchingSystemsGroup", true, null,
+                    new CheckDistanceToPickableSystem(),
+                    new CatchedPickableHandlerSystem())
                 .Inject()
                 .Inject(_playerSettings, _fishingRodHandView, _fishingRodSpineView, _hookView);
 

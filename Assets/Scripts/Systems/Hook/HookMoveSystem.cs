@@ -16,8 +16,7 @@ namespace DemoProject
         private readonly EcsFilterInject<Inc<HookMoveRequest>> _filter = default;
         private readonly EcsFilterInject<Inc<HookAnimationEvent>> _animationEventFilter = default;
         private Vector3 _position;
-      
-
+        
         public void Run(IEcsSystems systems)
         {
             foreach (var entity in _filter.Value)
@@ -40,9 +39,12 @@ namespace DemoProject
             {
                 _hook.Value.transform.DOMove(_position, _playerSettings.Value.TimeHookMove)
                     .SetLoops(2, LoopType.Yoyo)
-                    .SetEase(Ease.Linear)
-                    .OnStart(() => KinematikStatus(true))
-                    .OnStepComplete(() => Debug.Log("Catch"))
+                    .SetEase(Ease.OutSine)
+                    .OnStart(() =>
+                    {
+                        KinematikStatus(true);
+                    })
+                    .OnStepComplete(() => DistanceRequest())
                     .OnComplete(() =>
                     {
                         KinematikStatus(false);
@@ -51,10 +53,17 @@ namespace DemoProject
             }
         }
 
+        private void DistanceRequest()
+        {
+            ref var request = ref _world.Value.GetPool<CheckDistanceToPickableRequest>()
+                .Add(_world.Value.NewEntity());
+            request.HookPosition = _hook.Value.transform.position;
+        }
+
         private void KinematikStatus(bool status)
         {
             _hook.Value.Rigidbody.isKinematic = status;
-            _hook.Value.ObiRigidbody.kinematicForParticles = status;
+            //_hook.Value.ObiRigidbody.kinematicForParticles = status;
         }
     }
 }

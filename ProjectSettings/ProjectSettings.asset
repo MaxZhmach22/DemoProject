@@ -704,7 +704,7 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
-    Android: OBI_ONI_SUPPORTED
+    Android: OBI_ONI_SUPPORTED;LEOECSLITE_DI
     Standalone: OBI_ONI_SUPPORTED
     iPhone: OBI_ONI_SUPPORTED
   additionalCompilerArguments: {}

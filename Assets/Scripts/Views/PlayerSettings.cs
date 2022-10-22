@@ -1,4 +1,5 @@
-﻿using NaughtyAttributes;
+﻿using System.Collections.Generic;
+using NaughtyAttributes;
 using UnityEngine;
 
 
@@ -13,5 +14,8 @@ namespace DemoProject
         [field: BoxGroup("Hook Settings:")] [field: SerializeField] public LayerMask GroundMask { get; private set; }
         [field: BoxGroup("Hook Settings:")] [field: SerializeField] public LayerMask DoubleClickRaycast { get; private set; }
         [field: BoxGroup("Hook Settings:")] [field: SerializeField] public float TimeHookMove { get; private set; }
+        [field: BoxGroup("Hook Settings:")] [field: SerializeField] public float CatchDistance { get; private set; }
+        [field: BoxGroup("Hook Settings:")] [field: SerializeField] public List<PickableView> PrefabsList { get; private set; }
+        [field: BoxGroup("Hook Settings:")] [field: SerializeField] public int CountToInstantiate { get; private set; }
     }
 }
