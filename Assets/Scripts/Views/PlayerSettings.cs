@@ -17,5 +17,8 @@ namespace DemoProject
         [field: BoxGroup("Hook Settings:")] [field: SerializeField] public float CatchDistance { get; private set; }
         [field: BoxGroup("Hook Settings:")] [field: SerializeField] public List<PickableView> PrefabsList { get; private set; }
         [field: BoxGroup("Hook Settings:")] [field: SerializeField] public int CountToInstantiate { get; private set; }
+        
+        [field: Space(20)]
+        [field: BoxGroup("Respawn Zone Settings:")] [field: SerializeField] public Collider RespawnZone { get; private set; }
     }
 }

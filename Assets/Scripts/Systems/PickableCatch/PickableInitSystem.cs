@@ -12,6 +12,7 @@ namespace DemoProject
         private readonly EcsCustomInject<PlayerSettings> _playerSettings = default;
         private readonly EcsPoolInject<PickableComponent> _pickablePool = default;
         private readonly EcsPoolInject<InPoolMarker> _markerPool = default;
+        private readonly EcsPoolInject<ActivatorTimeComponent> _timePool = default;
         private readonly Transform _poolTransform = new GameObject("Pickable Pool").transform;
         
 
@@ -31,7 +32,11 @@ namespace DemoProject
                     var entity = _world.Value.NewEntity();
                     ref var pickableComp = ref _pickablePool.Value.Add(entity);
                     _markerPool.Value.Add(entity);
+                    ref var timeComp = ref _timePool.Value.Add(entity);
                     pickableComp.Pickable = go;
+                    pickableComp.Pickable.Init(_world.Value, entity);
+                    timeComp.StartTimeValue = 1f * i;
+                    timeComp.CurrentTimeValue = timeComp.StartTimeValue;
                 }
             }
         }

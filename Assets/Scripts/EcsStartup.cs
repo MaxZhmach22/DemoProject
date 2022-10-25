@@ -1,4 +1,5 @@
 using DemoProject.Input;
+using DG.Tweening;
 using Leopotam.EcsLite;
 using Leopotam.EcsLite.Di;
 using Leopotam.EcsLite.ExtendedSystems;
@@ -89,6 +90,10 @@ namespace DemoProject {
                 .Add(new PlayerMovementSystem())
                 .Add(new FishingRodSwitcherSystem())
                 .Add(new HookMoveSystem())
+                .AddGroup("PickableMovingSystemsGroup", true, null,
+                    new PickableActivatorSystem(),
+                    new FindDirectionSystem(),
+                    new PickableMovingSystem())
                 .AddGroup("CatchingSystemsGroup", true, null,
                     new CheckDistanceToPickableSystem(),
                     new CatchedPickableHandlerSystem())
@@ -142,6 +147,8 @@ namespace DemoProject {
                 _world.Destroy ();
                 _world = null;
             }
+            
+            DOTween.Clear();
         }
     }
 }
