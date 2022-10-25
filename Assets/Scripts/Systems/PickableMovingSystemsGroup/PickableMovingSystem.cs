@@ -12,7 +12,7 @@ namespace DemoProject
         private readonly EcsPoolInject<PickableComponent> _pickablePool = default;
         private readonly EcsPoolInject<MovingComponent> _movingCompPool = default;
         private readonly EcsPoolInject<FindDirectionRequest> _directionReauestPool = default;
-        private readonly EcsFilterInject<Inc<PickableComponent, MovingComponent>, Exc<FindDirectionRequest>> _filter = default;
+        private readonly EcsFilterInject<Inc<PickableComponent, MovingComponent>, Exc<FindDirectionRequest, CatchedComponent>> _filter = default;
      
         
         public void Run(IEcsSystems systems)
@@ -26,7 +26,7 @@ namespace DemoProject
                 {
                     SetRotation(movingComp, pickable);
                     movingComp.TimeCounter -= Time.deltaTime;
-                    pickable.Pickable.transform.position += movingComp.DirectionToMove * Time.deltaTime * movingComp.MovingSpeed;
+                    pickable.Pickable.transform.position += movingComp.DirectionToMove * Time.deltaTime * movingComp.MovingSpeedRange;
                     DebugExtension.DebugArrow(pickable.Pickable.transform.position, movingComp.DirectionToMove * 8, Color.cyan);
                 }
                 else

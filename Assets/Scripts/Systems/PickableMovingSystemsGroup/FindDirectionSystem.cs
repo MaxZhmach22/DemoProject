@@ -27,7 +27,7 @@ namespace DemoProject
             var randomDirection = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)).normalized;
             moving.DirectionToMove = randomDirection;
             moving.TimeCounter = Random.Range(5f, 10f);
-            moving.MovingSpeed = pickable.Pickable.MovingSpeed;
+            moving.MovingSpeedRange = Random.Range(pickable.Pickable.MovingSpeedRange.x, pickable.Pickable.MovingSpeedRange.y);
         }
     }
 }

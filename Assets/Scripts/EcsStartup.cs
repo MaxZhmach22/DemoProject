@@ -93,7 +93,8 @@ namespace DemoProject {
                 .AddGroup("PickableMovingSystemsGroup", true, null,
                     new PickableActivatorSystem(),
                     new FindDirectionSystem(),
-                    new PickableMovingSystem())
+                    new PickableMovingSystem(),
+                    new CheckInBoundsPosition())
                 .AddGroup("CatchingSystemsGroup", true, null,
                     new CheckDistanceToPickableSystem(),
                     new CatchedPickableHandlerSystem())

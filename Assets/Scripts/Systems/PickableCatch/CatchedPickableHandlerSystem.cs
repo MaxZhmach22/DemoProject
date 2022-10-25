@@ -9,6 +9,7 @@ namespace DemoProject
     {
         private readonly EcsWorldInject _world = default;
         private readonly EcsPoolInject<PickableCatchRequest> _requestPool = default;
+        private readonly EcsPoolInject<CatchedComponent> _catchedPool = default;
         private readonly EcsPoolInject<PickableComponent> _pickablePool = default;
         private readonly EcsFilterInject<Inc<PickableComponent, PickableCatchRequest>> _catchedFilter = default;
         private readonly Transform _fishBuckedParent = new GameObject("Bucket").transform;
@@ -18,7 +19,7 @@ namespace DemoProject
             foreach (var entity in _catchedFilter.Value)
             {
                 ref var pickableComp = ref _pickablePool.Value.Get(entity);
-
+                _catchedPool.Value.Add(entity);
                 Handle(pickableComp);
                 
                 _requestPool.Value.Del(entity);

@@ -9,11 +9,7 @@ namespace DemoProject
     {
         [field: BoxGroup("Settings")]
         [field: SerializeField]
-        public float MovingSpeed { get; private set; } = 2f;
-
-        [field: BoxGroup("Settings")]
-        [field: SerializeField]
-        public float RotationSpeed { get; private set; } = 2f;
+        public Vector2Int MovingSpeedRange { get; private set; }
         
         private EcsWorld _world;
         private int _entity;

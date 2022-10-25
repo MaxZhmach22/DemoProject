@@ -45,8 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee14e28d9a9540739cac5d92cb3bde95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <MovingSpeed>k__BackingField: 3
-  <RotationSpeed>k__BackingField: 3
+  <MovingSpeedRange>k__BackingField: {x: 3, y: 5}
 --- !u!1001 &3215042235557548606
 PrefabInstance:
   m_ObjectHideFlags: 0

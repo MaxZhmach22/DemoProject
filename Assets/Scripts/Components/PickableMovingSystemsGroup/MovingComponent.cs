@@ -6,7 +6,7 @@ namespace DemoProject
     {
         public Vector3 DirectionToMove;
         public float TimeCounter;
-        public float MovingSpeed;
+        public float MovingSpeedRange;
         public bool IsSet;
     }
 }
